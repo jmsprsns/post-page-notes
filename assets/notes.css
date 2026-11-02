@@ -43,6 +43,9 @@
 
 #post-page-notes .ppn { max-width: 900px; }
 
+/* Clear WordPress's fixed admin bar when a link scrolls to the box. */
+#post-page-notes { scroll-margin-top: 48px; }
+
 #post-page-notes .hndle {
 	justify-content: flex-start;
 	gap: 8px;
@@ -226,7 +229,7 @@
 .ppn .ppn-thread.is-resolved { background: #f6f7f7; }
 
 .ppn .ppn-replies {
-	margin: 10px 0 0 13px;
+	margin: 10px 0 0 6px;
 	padding-left: 12px;
 	border-left: 2px solid var(--ppn-line);
 }

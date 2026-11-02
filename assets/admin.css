@@ -258,9 +258,7 @@ body.ppn-settings-page #wpcontent { padding-left: 0; }
 .ppn-option-text span { color: #50575e; }
 
 .ppn-example {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+	overflow-wrap: anywhere;
 	font-family: Consolas, Monaco, monospace;
 	font-size: 12px;
 }
@@ -346,7 +344,7 @@ body.ppn-settings-page #wpcontent { padding-left: 0; }
 }
 
 .ppn-preview-cell.is-open > span:last-child { color: var(--ppn-accent); font-weight: 500; }
-.ppn-preview-cell.is-done svg { color: var(--ppn-ok); }
+.ppn-preview-cell.is-done > span:last-child svg { color: var(--ppn-ok); }
 
 .ppn-preview-none { color: #a7aaad; }
 

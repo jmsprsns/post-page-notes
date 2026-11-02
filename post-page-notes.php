@@ -3,7 +3,7 @@
  * Plugin Name:       WordPress Post and Page Notes
  * Plugin URI:        https://www.contentpowered.com
  * Description:       Threaded notes on posts and pages for your team, in the block editor and the classic editor, with a Notes column in your post lists.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Requires at least: 5.8
  * Requires PHP:      7.2
  * Author:            Content Powered

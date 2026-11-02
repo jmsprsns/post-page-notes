@@ -881,7 +881,14 @@
 				return;
 			}
 		} else {
-			node = view.root.closest( '.postbox' ) || view.root;
+			// Link to the notes as a whole: the classic box scrolls into view;
+			// the block editor's sidebar just opens, at its top.
+			node = view.root.closest( '.postbox' );
+
+			if ( ! node ) {
+				store.target = null;
+				return;
+			}
 		}
 
 		store.target = null;
@@ -891,7 +898,7 @@
 				return;
 			}
 
-			node.scrollIntoView( { block: target.block || 'center', behavior: 'smooth' } );
+			node.scrollIntoView( { block: target.id ? target.block || 'center' : 'start', behavior: 'smooth' } );
 
 			if ( target.id ) {
 				node.classList.add( 'is-target' );

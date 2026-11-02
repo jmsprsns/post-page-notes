@@ -466,6 +466,9 @@ final class Post_Page_Notes_Admin {
 	/**
 	 * Posts and pages with open threads, latest activity first.
 	 *
+	 * Only notes in open threads count: a post's place in the list and the
+	 * note quoted under it come from its open threads, not resolved ones.
+	 *
 	 * @return void
 	 */
 	public function render_open() {
@@ -475,8 +478,17 @@ final class Post_Page_Notes_Admin {
 		$rows  = array();
 
 		if ( $types ) {
-			$from = self::live_notes_sql( $types );
-			$rows = $wpdb->get_results( "SELECT n.post_id, SUM( n.parent_id = 0 AND n.resolved = 0 ) AS open_threads, MAX( CASE WHEN n.deleted = 0 THEN n.id END ) AS latest {$from} GROUP BY n.post_id HAVING open_threads > 0 ORDER BY latest DESC LIMIT 60" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $from comes from $wpdb->prepare() (live_notes_sql()); the rest is fixed SQL.
+			$table        = Post_Page_Notes_Store::table();
+			$placeholders = implode( ',', array_fill( 0, count( $types ), '%s' ) );
+
+			// n: every note in an open thread (its first note, or a reply whose first note, r, is open).
+			$rows = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+				$wpdb->prepare(
+					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- One %s per type.
+					"SELECT n.post_id, SUM( n.parent_id = 0 ) AS open_threads, MAX( CASE WHEN n.deleted = 0 THEN n.id END ) AS latest FROM {$table} n LEFT JOIN {$table} r ON r.id = n.thread_id INNER JOIN {$wpdb->posts} p ON p.ID = n.post_id WHERE p.post_type IN ({$placeholders}) AND p.post_status NOT IN ('trash','auto-draft') AND ( ( n.parent_id = 0 AND n.resolved = 0 ) OR ( n.thread_id > 0 AND r.resolved = 0 ) ) GROUP BY n.post_id HAVING open_threads > 0 ORDER BY latest DESC LIMIT 60",
+					$types
+				)
+			);
 		}
 
 		$items = array();

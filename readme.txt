@@ -92,6 +92,11 @@ Deactivating keeps everything. Deleting the plugin from the Plugins screen remov
 
 == Changelog ==
 
+= 1.0.1 =
+* Links to a page's notes open the block editor's sidebar at the top instead of part-way down.
+* The overview's "Waiting on someone" list orders posts by their open threads and quotes the latest note from one of them, not from a resolved thread.
+* Replies are indented less, so nested replies have more room in the sidebar.
+
 = 1.0.0 =
 * First release.
 
